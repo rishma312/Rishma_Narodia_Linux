@@ -1,0 +1,181 @@
+1. Grade Checker
+Take a score as input and print the grade based on the following:
+90+ : "A"
+80-89 : "B"
+70-79 : "C"
+60-69 : "D"
+Below 60 : "F"
+here we used a basic if else statement to carry out marks and all.
+Answer:
+def calculate_grade(score):
+    """  Takes a score (integer) as input and returns the corresponding letter grade.""" if score >= 90:										return "A"											    elif score >= 80:										    # This condition is only checked if score < 90, so it covers 80-89			 return "B"											  elif score >= 70:										     # This condition is only checked if score < 80, so it covers 70-79			 return "C"										                 elif score >= 60:										     # This condition is only checked if score < 70, so it covers 60-69			 return "D"											else:												    # This covers all remaining scores (Below 60)						 return "F"
+
+# --- Example Usage ---
+# 1. Take score input from the user
+while True:											 try:											 user_input = input("Enter the score (0-100): ")						     # Convert the input to an integer								 score = int(user_input)									    # Simple validation for a typical score range						     if 0 <= score <= 100:									break												else:											 print("Please enter a score between 0 and 100.")					except ValueError:									print("Invalid input. Please enter a whole number.")
+# 2. Call the function to get the grade
+grade = calculate_grade(score)
+# 3. Print the result
+print(f"\nScore: {score}")								print(f"Grade: {grade}")
+****************************************************************************************
+2 Student Grades
+Create a dictionary where the keys are student names and the values are their grades. Allow the user to:
+Add a new student and grade.
+Update an existing student’s grade.
+Print all student grades.
+
+Used dictionary and basic operations. Using if else:
+Answer:
+# Initialize the dictionary to store student names and grades
+student_grades = {"Alice": "A", "Bob": "C", "Charlie": "B"}
+def display_menu():
+    """Prints the main menu options."""
+ print("\n--- Student Grade Manager ---")						
+print("1. Add a new student and grade ➕")
+    print("2. Update an existing student’s grade 📝")
+    print("3. Print all student grades 📋")
+    print("4. Exit 🚪")
+    print("-----------------------------")
+
+def add_student():
+    """Adds a new student and their grade to the dictionary."""
+    name = input("Enter student name to add: ").strip()
+    # Check if the student already exists
+    if name in student_grades:
+        print(f"⚠️ Student **{name}** already exists with grade **{student_grades[name]}**.")
+        return
+
+    grade = input("Enter the grade (e.g., A, B, C, D, F): ").strip().upper()
+    student_grades[name] = grade
+    print(f"✅ Successfully added **{name}** with grade **{grade}**.")
+
+def update_grade():
+    """Updates the grade for an existing student."""
+    name = input("Enter student name to update grade for: ").strip()
+    
+    # Check if the student exists
+    if name not in student_grades:
+        print(f"❌ Student **{name}** not found in the records.")
+        return
+
+    current_grade = student_grades[name]
+    new_grade = input(f"Current grade for {name} is **{current_grade}**. Enter the new grade: ").strip().upper()
+    
+    student_grades[name] = new_grade
+    print(f"✏️ Successfully updated **{name}'s** grade from **{current_grade}** to **{new_grade}**.")
+
+def print_grades():
+    """Prints all student names and their corresponding grades."""
+    if not student_grades:
+        print("ℹ️ The grade list is currently empty.")
+        return
+
+    print("\n## 📋 All Student Grades")
+    # Print header for clarity
+    print("-" * 25)
+    print(f"{'Student Name':<15}{'Grade':>8}")
+    print("-" * 25)
+
+    # Iterate through the dictionary and print key-value pairs
+    for name, grade in student_grades.items():
+        print(f"{name:<15}{grade:>8}")
+    print("-" * 25)
+
+# --- Main Program Loop ---
+if __name__ == "__main__":
+    
+    running = True
+    while running:
+        display_menu()
+        
+        # Get user choice
+        choice = input("Enter your choice (1-4): ")
+        
+        # Use if-elif-else for menu navigation
+        if choice == '1':
+            add_student()
+        
+        elif choice == '2':
+            update_grade()
+            
+        elif choice == '3':
+            print_grades()
+            
+        elif choice == '4':
+            print("👋 Exiting the Grade Manager. Goodbye!")
+            running = False
+            
+        else:
+            print("⚠️ Invalid choice. Please enter a number between 1 and 4.")
+***********************************************************************************************
+3.Write to a File
+Write a program to create a text file and write some content to it.			Using file functions like write and open.
+Answer :
+def create_and_write_file(filename, content):
+    """Creates a text file and writes content to it.
+    :param filename: The name of the file to create (e.g., "my_document.txt").
+    :param content: The string content to write into the file.
+    """
+    # 1. Open the file in 'write' mode ('w'). 
+    # If the file does not exist, it will be created. 
+    # If the file exists, its contents will be overwritten.
+    try:
+        with open(filename, 'w') as file:
+            # 2. Write the content string to the file
+            file.write(content)  
+        # 3. Print a success message
+        print(f"✅ Successfully created and wrote to the file: **{filename}**")
+        print(f"Content written:\n---\n{content}\n---")
+    except IOError as e:
+        # Handle potential errors, such as permission denied
+        print(f"❌ An error occurred while writing to the file: {e}")
+# --- Example Usage ---
+# Define the file name and the content
+file_name = "sample_output.txt"
+file_content = """
+This is the first line of content.
+This line was written using the file.write() function in Python.
+The 'w' mode ensures the file is created or completely overwritten.
+"""
+# Call the function to execute the file operation
+create_and_write_file(file_name, file_content.strip())
+*******************************************************************************************
+4. Read from a File
+We used open in read mode and file.read to read and print to display.
+Answer :
+# --- Setup: Create a file to read from ---
+# In a real scenario, this file would already exist.
+# We use 'w' (write mode) here only to ensure the file is ready for reading.
+setup_filename = "read_sample.txt"
+initial_content = "Hello, Python File Reading!\nThis is the content you are about to read using file.read().\nReading files is essential for data processing."
+with open(setup_filename, 'w') as f:
+    f.write(initial_content.strip())
+print(f"✅ Setup complete: Created **{setup_filename}** for reading.")
+# ------------------------------------------------------------------
+def read_and_print_file(filename):
+    """
+    Opens a file in read mode ('r'), reads its content, and prints it.
+    :param filename: The name of the file to read.
+    """print(f"\n--- Reading Content from **{filename}** ---")
+    # 1. Open the file in 'read' mode ('r'). 
+    # The 'r' mode is the default, so it's sometimes omitted, but it's good practice to include it.
+    try:
+        with open(filename, 'r') as file:
+            # 2. Use file.read() to read the entire content of the file 
+            # as a single string and store it in a variable.
+            content = file.read()
+            # 3. Print the content
+            print(content)
+        print("---------------------------------------------")
+        print("✅ File reading complete.")
+    except FileNotFoundError:
+        print(f"❌ Error: The file **{filename}** was not found.")
+    except Exception as e:
+        print(f"❌ An unexpected error occurred: {e}")
+# --- Execution ---
+read_and_print_file(setup_filename)
+***********************************************************************************************
+
+Submission Guidelines -: Attach Screenshots or command along with explanation and submit in doc(google doc or microsoft doc) format or share github link
+
+
