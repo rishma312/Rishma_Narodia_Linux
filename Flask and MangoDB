@@ -1,0 +1,85 @@
+1. Create a Flask application with an /api route. When this route is accessed, it should return a JSON list. The data should be stored in a backend file, read from it, and sent as a response.
+Answer :
+my_flask_app/
+│
+├── data.txt
+└── app.py
+data.txt
+(Example content—each line will be treated as a list item)
+Apple
+Banana
+Mango
+Orange
+app.py (Flask App Code):
+from flask import Flask, jsonify
+app = Flask(__name__)
+@app.route('/api', methods=['GET'])
+def get_data():
+    # Read data from backend text file
+    with open("data.txt", "r") as file:
+        items = file.read().splitlines()   # Convert lines to a Python list
+    return jsonify(items)  # Convert list to JSON and return
+if __name__ == "__main__":
+    app.run(debug=True)
+How to Run
+Install Flask
+pip install flask
+Run the script
+python app.py
+Open in browser or Postman
+http://127.0.0.1:5000/api
+Expected JSON Output:
+["Apple", "Banana", "Mango", "Orange"]
+***********************************************************************************************
+
+2. Create a form on the frontend that, when submitted, inserts data into MongoDB Atlas. Upon successful submission, the user should be redirected to another page displaying the message "Data submitted successfully". If there's an error during submission, display the error on the same page without redirection.
+
+Answer 
+Project Structure
+flask_mongo_app/
+│
+├── app.py
+└── templates/
+    ├── index.html
+    └── success.html
+
+app.py 
+from flask import Flask, render_template, request, redirect
+from pymongo import MongoClient
+
+app = Flask(__name__)
+
+# MongoDB Atlas connection string
+client = MongoClient("YOUR_MONGODB_ATLAS_CONNECTION_STRING")
+db = client["testdb"]
+collection = db["users"]
+
+@app.route("/", methods=["GET", "POST"])
+def index():
+    error_message = None
+
+    if request.method == "POST":
+        name = request.form.get("name")
+        email = request.form.get("email")
+
+        try:
+            # Insert into MongoDB
+            collection.insert_one({"name": name, "email": email})
+            return redirect("/success")
+        except Exception as e:
+            error_message = f"Error submitting data: {e}"
+
+    return render_template("index.html", error=error_message)
+
+@app.route("/success")
+def success():
+    return render_template("success.html")
+
+if __name__ == "__main__":
+    app.run(debug=True)
+
+
+
+
+Submission Guidelines -: Attach Screenshots or command along with explanation and submit in doc(google doc or microsoft doc) format also attach github repo link
+
